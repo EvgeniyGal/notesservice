@@ -1,12 +1,8 @@
--- Inserting users
 INSERT INTO users (name, password)
 VALUES ('User1', '$2a$10$5NZBB.hGCwcabH5vuRJdw.UjAT/4Y88fV.x/zWnBrq2.a3UVcNMGq1'),
 ('User2', '$2a$10$PrADq.r9iRLrWIgA1iaUN.d2qkl0CW0FuNInDLgxIfCLw3WHeWTKu2'),
 ('User3', '$2a$10$8.D8UxRDxjePOmUdPKZG5uoadYhX4FP.m8uL4RmKCmKXVIsQ8AcF23');
 
-
-
--- Inserting notes
 INSERT INTO notes (id, name, content, access_type, user_id)
 VALUES
   ('2f873118-58a1-4c56-aa5d-124ff5a0e6e8', 'Note 1', 'Content of Note 1', 'Private', 1),
