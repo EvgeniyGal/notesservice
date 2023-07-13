@@ -1,6 +1,10 @@
 -- Inserting users
 INSERT INTO users (name, password)
-VALUES ('User1', 'password1'), ('User2', 'password2'), ('User3', 'password3');
+VALUES ('User1', '$2a$10$5NZBB.hGCwcabH5vuRJdw.UjAT/4Y88fV.x/zWnBrq2.a3UVcNMGq1'),
+('User2', '$2a$10$PrADq.r9iRLrWIgA1iaUN.d2qkl0CW0FuNInDLgxIfCLw3WHeWTKu2'),
+('User3', '$2a$10$8.D8UxRDxjePOmUdPKZG5uoadYhX4FP.m8uL4RmKCmKXVIsQ8AcF23');
+
+
 
 -- Inserting notes
 INSERT INTO notes (id, name, content, access_type, user_id)
