@@ -1,0 +1,15 @@
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE notes (
+  id VARCHAR(36) PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  content VARCHAR(10000) NOT NULL,
+  access_type VARCHAR(10) NOT NULL,
+  user_id INT NOT NULL,
+  CONSTRAINT fk_notes_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
