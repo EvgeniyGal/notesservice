@@ -1,9 +1,7 @@
 package edu.goit.notesservice.note;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import edu.goit.notesservice.auth.User;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -23,6 +21,7 @@ public class Note {
     @Column(length = 10, nullable = false)
     private String access_type;
 
-    @Column(nullable = false)
-    private int user_id;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
