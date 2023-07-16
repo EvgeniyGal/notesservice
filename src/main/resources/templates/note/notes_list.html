@@ -18,7 +18,6 @@
             justify-content: center;
             width: 1200px;
         }
-
         .colName {
             width: 300px;
         }
@@ -33,6 +32,9 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+        }
+        .table tbody td{
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -60,7 +62,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr scope="row" th:each="note : ${notes}">
+    <tr th:each="note : ${notes}">
         <td class="colName" th:text="${note.name}"></td>
         <td th:text="${note.content}"></td>
         <td class="colType" th:text="${note.access_type}"></td>
@@ -79,7 +81,7 @@
                 </form>
                 <form
                         th:action="@{/note/edit}"
-                        method="post"
+                        method="get"
                         style="display: inline"
                 >
                     <input type="hidden" name="id" th:value="${note.id}"/>
@@ -87,7 +89,6 @@
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>
                 </form>
-
                 <a th:href="@{/note/share(id=${note.id})}">
                     <button class="btn bg-success">
                         <i class="fa fa-share-alt" aria-hidden="true"></i>

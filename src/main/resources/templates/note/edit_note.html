@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Note List</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <style>
+        .container {
+            justify-content: center;
+            width: 1200px;
+        }
+        .pageTitle{
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        .formItem {
+            display: flex;
+            align-items: stretch;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        .formItem label.itemLabel {
+            width: 70px;
+            font-size: 14px;
+            color: grey;
+        }
+        #content {
+            resize: none;
+        }
+        .buttonsBox {
+            display: flex;
+            justify-content: right;
+        }
+        .buttonsBox button:first-child{
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body class="container">
+<main>
+    <h1 class="pageTitle bg-light">Редагувати нотатку</h1>
+    <form
+            action="/note/edit"
+            th:object="${note}"
+            method="post"
+    >
+        <div class="formItem">
+        <label for="id" class="itemLabel">id:</label>
+        <input
+                type="text"
+                id="id"
+                th:field="*{id}"
+                class="form-control"
+                readonly
+        />
+    </div>
+        <div class="formItem">
+            <label for="title" class="itemLabel">Назва</label>
+            <input
+                    id="title"
+                    th:field="*{name}"
+                    placeholder="Будь-ласка зазначте назву нотатки"
+                    class="form-control"
+                    required
+            />
+        </div>
+        <div class="formItem">
+            <label for="content" class="itemLabel">Опис</label>
+            <textarea
+                    id="content"
+                    rows="5"
+                    th:field="*{content}"
+                    placeholder="Будь-ласка додайте опис нотатки"
+                    class="form-control"
+                    required
+            ></textarea>
+        </div>
+        <div class="formItem">
+            <label for="content" class="itemLabel">Тип</label>
+            <div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="noteType" id="noteType1" required
+                           th:field="*{access_type}" th:value="Public">
+                    <label class="form-check-label" for="noteType1">
+                        Публічна
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="noteType" id="noteType2" required
+                           th:field="*{access_type}" th:value="Private">
+                    <label class="form-check-label" for="noteType2">
+                        Приватна
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="buttonsBox">
+            <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="window.location.href='/note/list'"
+            >
+                Відмінити
+            </button>
+            <button type="submit" class="btn btn-primary">Зберегти</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>
