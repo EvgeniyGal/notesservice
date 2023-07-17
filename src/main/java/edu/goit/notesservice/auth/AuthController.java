@@ -38,12 +38,12 @@ public class AuthController {
 
                 if (passwordEncoder.matches(password, storedPassword)) {
                     Authentication authentication = authenticationManager.authenticate(
-                            new UsernamePasswordAuthenticationToken(name, password)
+                            new UsernamePasswordAuthenticationToken(name, password, user.getAuthorities())
                     );
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                    return new ModelAndView("redirect:/list");
+                    return new ModelAndView("redirect:/note/list");
                 }
             }
         } catch (AuthenticationException e) {
