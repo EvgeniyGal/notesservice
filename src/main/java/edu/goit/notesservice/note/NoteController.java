@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 public class NoteController {
     private final NoteService noteService;
+    private static final String REDIRECT_TO_LIST = "redirect:/note/list";
 
     @GetMapping ("/list")
     public ModelAndView getAllNotes() {
@@ -28,7 +29,7 @@ public class NoteController {
     @PostMapping("/create")
     public String addNewNote(@ModelAttribute Note note) {
         noteService.add(note);
-        return "redirect:/note/list";
+        return REDIRECT_TO_LIST;
     }
 
     @GetMapping("/edit")
@@ -41,12 +42,12 @@ public class NoteController {
     @PostMapping("/edit")
     public String updateNote(@ModelAttribute Note note) {;
         noteService.update(note);
-        return "redirect:/note/list";
+        return REDIRECT_TO_LIST;
     }
 
     @PostMapping("/delete")
     public String deleteNote(@RequestParam("id") String id) {
         noteService.deleteById(id);
-        return "redirect:/note/list";
+        return REDIRECT_TO_LIST;
     }
 }

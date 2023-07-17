@@ -18,8 +18,9 @@ public class Note {
     @Column(length = 10000, nullable = false)
     private String content;
 
-    @Column(length = 10, nullable = false)
-    private String access_type;
+    @Column(name = "access_type", length = 10, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AccessType accessType;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
