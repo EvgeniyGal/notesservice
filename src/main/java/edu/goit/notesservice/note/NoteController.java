@@ -33,8 +33,15 @@ public class NoteController {
     }
 
     @GetMapping("/edit")
-    public ModelAndView getNoteById(@RequestParam(name = "id") String id) {
+    public ModelAndView getNoteForEdit(@RequestParam(name = "id") String id) {
         ModelAndView result = new ModelAndView("note/edit_note");
+        result.addObject("note", noteService.getById(id));
+        return result;
+    }
+
+    @GetMapping("/share")
+    public ModelAndView getNoteForShare(@RequestParam(name = "id") String id) {
+        ModelAndView result = new ModelAndView("note/share");
         result.addObject("note", noteService.getById(id));
         return result;
     }

@@ -18,25 +18,29 @@
             justify-content: center;
             width: 1200px;
         }
+
         .colName {
             width: 300px;
         }
+
         .colType {
             width: 150px;
         }
+
         .colButtons {
             width: 150px;
         }
+
         .buttonsBox {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
         }
-        .table tbody td{
+
+        .table tbody td {
             vertical-align: middle;
         }
-
 
 
     </style>
@@ -80,7 +84,9 @@
                         style="display: inline"
                 >
                     <input type="hidden" name="id" th:value="${note.id}"/>
-                    <button class="btn btn-danger">
+                    <button class="btn btn-danger"
+                            th:data-confirm-delete="|Ви впевнені що хочете видалити нотатку '${note.name}'? Цю операцію не можна буде відмінити.|"
+                            onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </button>
                 </form>
@@ -94,15 +100,28 @@
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>
                 </form>
-                <a th:href="@{/note/share(id=${note.id})}">
-                    <button class="btn bg-success">
-                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                    </button>
-                </a>
+                <!--Temporary hardcoded host and port -->
+                <button
+                        th:data-link="@{http://localhost:9999/note/share(id=${note.id})}"
+                        onclick="copy_link(this.getAttribute('data-link'))"
+                        class="btn bg-success">
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </button>
             </div>
         </td>
     </tr>
     </tbody>
 </table>
 </body>
+<script>
+    function copy_link(link) {
+        const el = document.createElement('textarea');
+        el.value = link;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        alert("Посилання на нотатку успішно скопійовано! Натисніть `ctrl+v` щоб відправити його будь-кому");
+        document.body.removeChild(el);
+    }
+</script>
 </html>
