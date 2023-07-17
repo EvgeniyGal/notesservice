@@ -16,7 +16,7 @@ public class NoteService {
 
     public List<Note> listAll() {
         //temporary search for User with id 1
-        return noteRepository.findByUserId(1);
+        return noteRepository.findNotesByUserId(1);
     }
 
     public Note add(Note note) {

@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface NoteRepository extends JpaRepository<Note, String> {
-
-    @Query(value = "SELECT * FROM NOTES WHERE user_id=?", nativeQuery = true)
-    public List<Note> findByUserId(int user_id);
+    List<Note> findNotesByUserId(int user_id);
 }
