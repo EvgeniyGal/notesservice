@@ -1,7 +1,7 @@
-INSERT INTO users (name, password)
-VALUES ('User1', '$2a$10$5NZBB.hGCwcabH5vuRJdw.UjAT/4Y88fV.x/zWnBrq2.a3UVcNMGq1'),
-('User2', '$2a$10$PrADq.r9iRLrWIgA1iaUN.d2qkl0CW0FuNInDLgxIfCLw3WHeWTKu2'),
-('User3', '$2a$10$8.D8UxRDxjePOmUdPKZG5uoadYhX4FP.m8uL4RmKCmKXVIsQ8AcF23');
+INSERT INTO users (name, password, role)
+VALUES ('User1', 'password', 'USER'),
+('User2', '$2a$10$PrADq.r9iRLrWIgA1iaUN.d2qkl0CW0FuNInDLgxIfCLw3WHeWTKu2', 'USER'),
+('User3', '$2a$10$8.D8UxRDxjePOmUdPKZG5uoadYhX4FP.m8uL4RmKCmKXVIsQ8AcF23', 'USER');
 
 INSERT INTO notes (id, name, content, access_type, user_id)
 VALUES
