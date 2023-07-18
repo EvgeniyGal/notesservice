@@ -2,6 +2,7 @@ package edu.goit.notesservice.note;
 
 import edu.goit.notesservice.auth.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity

@@ -1,5 +1,6 @@
 package edu.goit.notesservice.note;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class NoteController {
     }
 
     @PostMapping("/create")
-    public String addNewNote(@ModelAttribute Note note) {
+    public String addNewNote(@Valid @ModelAttribute Note note) {
         noteService.add(note);
         return REDIRECT_TO_LIST;
     }
@@ -47,13 +48,13 @@ public class NoteController {
     }
 
     @PostMapping("/edit")
-    public String updateNote(@ModelAttribute Note note) {;
+    public String updateNote(@Valid @ModelAttribute Note note) {;
         noteService.update(note);
         return REDIRECT_TO_LIST;
     }
 
     @PostMapping("/delete")
-    public String deleteNote(@RequestParam("id") String id) {
+    public String deleteNote(@Valid @RequestParam("id") String id) {
         noteService.deleteById(id);
         return REDIRECT_TO_LIST;
     }
