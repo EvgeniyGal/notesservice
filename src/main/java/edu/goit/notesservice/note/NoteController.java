@@ -23,12 +23,12 @@ public class NoteController {
     @GetMapping("/create")
     public ModelAndView getMarkupToCreateNote() {
         ModelAndView result = new ModelAndView("note/create_note");
-        result.addObject("note", new Note());
+        result.addObject("note", new NoteCreateDTO());
         return result;
     }
 
     @PostMapping("/create")
-    public String addNewNote(@Valid @ModelAttribute Note note) {
+    public String addNewNote(@Valid @ModelAttribute NoteCreateDTO note) {
         noteService.add(note);
         return REDIRECT_TO_LIST;
     }

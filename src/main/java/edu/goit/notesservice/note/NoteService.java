@@ -19,12 +19,13 @@ public class NoteService {
         return noteRepository.findNotesByUserId(1);
     }
 
-    public Note add(Note note) {
-        note.setId(UUID.randomUUID().toString());
+    public Note add(NoteCreateDTO note) {
+        Note fullNote = new Note(note);
+        fullNote.setId(UUID.randomUUID().toString());
         //temporary all notes to User 1
         User user = userRepository.getReferenceById(1);
-        note.setUser(user);
-        return noteRepository.save(note);
+        fullNote.setUser(user);
+        return noteRepository.save(fullNote);
     }
 
     public boolean isExist(String id) {
@@ -32,7 +33,7 @@ public class NoteService {
     }
 
     public void deleteById(String id) {
-        if(!isExist(id)){
+        if (!isExist(id)) {
             throw new IllegalArgumentException("Нотатка з id '" + id + "' не існує");
         }
         noteRepository.deleteById(id);
@@ -46,7 +47,7 @@ public class NoteService {
     }
 
     public Note getById(String id) {
-        if(!isExist(id)){
+        if (!isExist(id)) {
             throw new IllegalArgumentException("Нотатка з id '" + id + "' не існує");
         }
         return noteRepository.getReferenceById(id);
