@@ -23,7 +23,7 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public ModelAndView getLogin(){
+    public ModelAndView getLogin() {
         return new ModelAndView("/security/login");
     }
 
@@ -33,7 +33,7 @@ public class AuthController {
         try {
             var user = userDetailsService.loadUserByUsername(name);
             String storedPassword = user.getPassword();
-            if (passwordEncoder.matches(password,storedPassword)) {
+            if (passwordEncoder.matches(password, storedPassword)) {
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(name, null, user.getAuthorities())
                 );
@@ -52,9 +52,21 @@ public class AuthController {
     }
 
     @GetMapping("/registration")
-    public ModelAndView getRegistration(){
+    public ModelAndView getRegistration() {
         return new ModelAndView("/security/registration");
     }
 
+    @PostMapping("/registration")
+    public ModelAndView postRegistration(@RequestParam(name = "name") String name,
+                                         @RequestParam(name = "password") String password) {
+        try {
+            userDetailsService.registration(name, password);
+            return new ModelAndView("redirect:/note/list");
+        } catch (AuthenticationException e) {
+            return new ModelAndView()
+                    .addObject("error", true)
+                    .addObject("errorMessage", e.getMessage());
+        }
+    }
 
 }
