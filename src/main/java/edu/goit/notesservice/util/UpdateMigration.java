@@ -11,5 +11,4 @@ public class UpdateMigration {
     public void update() throws InterruptedException {
         flywayUtils.migrate();
     }
-
 }

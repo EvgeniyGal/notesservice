@@ -15,5 +15,4 @@ public class FlywayUtils {
     public void migrate(){
         flyway.migrate();
     }
-    public void validate(){ flyway.validate();}
 }
