@@ -31,7 +31,6 @@ public class RegistrationRequest {
             if (insertStmt != null) {
                 insertStmt.close();
             }
-            connection.close();
             connection.setAutoCommit(true);
         }
     }
