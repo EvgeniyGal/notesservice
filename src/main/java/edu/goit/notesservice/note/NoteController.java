@@ -2,8 +2,10 @@ package edu.goit.notesservice.note;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 @RequestMapping("/note")
@@ -13,7 +15,7 @@ public class NoteController {
     private final NoteService noteService;
     private static final String REDIRECT_TO_LIST = "redirect:/note/list";
 
-    @GetMapping ("/list")
+    @GetMapping("/list")
     public ModelAndView getAllNotes() {
         ModelAndView result = new ModelAndView("note/notes_list");
         result.addObject("notes", noteService.listAll());
@@ -42,13 +44,18 @@ public class NoteController {
 
     @GetMapping("/share")
     public ModelAndView getNoteForShare(@RequestParam(name = "id") String id) {
-        ModelAndView result = new ModelAndView("note/share");
-        result.addObject("note", noteService.getById(id));
-        return result;
+        if (noteService.isPossibleToShowNote(id)) {
+            ModelAndView result = new ModelAndView("note/share");
+            result.addObject("note", noteService.getById(id));
+            return result;
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
+        }
     }
 
     @PostMapping("/edit")
-    public String updateNote(@Valid @ModelAttribute Note note) {;
+    public String updateNote(@Valid @ModelAttribute Note note) {
         noteService.update(note);
         return REDIRECT_TO_LIST;
     }

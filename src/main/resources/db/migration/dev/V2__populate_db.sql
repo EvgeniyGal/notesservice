@@ -1,6 +1,6 @@
 INSERT INTO users (username, password, authority)
 VALUES ('User1', '$2a$12$sScoXeTa/jPXSp7g.QdON.oZQCD9SV5OnoOtn1bhTjLViowmWT6rG', 'ROLE_USER'),
-       ('Admin', '$2a$12$yXurFLBSl1TryMbkYqakFeiMGMGZvCifaq3v65ni1hdKQqu6roeE.', 'ROLE_ADMIN');
+       ('admin', '$2a$12$SNN3ROV0FEsgNntiwVxsvepT/Lm46emfVsClXC9OXqR6cfDQNX9xG', 'ROLE_ADMIN');
 
 INSERT INTO notes (id, title, content, access_type, user_id)
 VALUES ('2f873118-58a1-4c56-aa5d-124ff5a0e6e8', 'Note 1', 'Content of Note 1', 'PRIVATE', 1),
