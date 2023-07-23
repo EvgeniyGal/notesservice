@@ -10,7 +10,7 @@ import lombok.Data;
 public class NoteCreateDTO {
     @NotBlank
     @Size(min = 3, max = 100)
-    private String name;
+    private String title;
 
     @NotBlank
     @Size(min = 3, max = 10000)

@@ -26,7 +26,7 @@
         <div class="col-md-6 offset-md-3">
 
             <div th:if="${param.error}" th:classappend="${param.error} ? 'alert alert-danger' : ''">
-                <p th:text="'Неправильний пароль або імʼя'"></p>
+                <p th:text="'Невірний пароль або імʼя користувача'"></p>
             </div>
             <div th:if="${param.logout}" class="alert alert-success">Ви успішно вийшли з системи</div>
 
@@ -38,7 +38,7 @@
                     <form method="post" role="form" th:action="@{/login}" class="form-horizontal" th:object="${user}">
                         <div class="form-group mb-3">
                             <label class="control-label">Імʼя</label>
-                            <input type="text" id="username" name="name" class="form-control" placeholder="Введіть імʼя" />
+                            <input type="text" id="username" name="username" class="form-control" placeholder="Введіть імʼя" />
                         </div>
 
                         <div class="form-group mb-3">
