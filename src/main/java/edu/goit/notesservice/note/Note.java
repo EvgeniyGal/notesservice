@@ -19,7 +19,7 @@ public class Note {
     @Column(length = 100, nullable = false)
     @NotBlank
     @Size(min = 3, max = 100)
-    private String name;
+    private String title;
 
     @Column(length = 10000, nullable = false)
     @NotBlank
@@ -39,7 +39,7 @@ public class Note {
     }
 
     public Note(NoteCreateDTO note) {
-        this.name = note.getName();
+        this.title = note.getTitle();
         this.content = note.getContent();
         this.accessType = note.getAccessType();
     }
