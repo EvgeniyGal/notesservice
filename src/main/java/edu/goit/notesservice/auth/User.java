@@ -2,14 +2,12 @@ package edu.goit.notesservice.auth;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -17,12 +15,11 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "users")
-@AllArgsConstructor
-@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @NotNull
     private UUID id;
 
     @Column(length = 50, unique = true, nullable = false)
@@ -41,8 +38,11 @@ public class User implements UserDetails {
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean enabled = true;
 
+    public User() {
+    }
 
     public User(String username, String password) {
+        this.id = UUID.randomUUID();
         this.username = username;
         this.password = password;
         this.authority = "ROLE_USER";

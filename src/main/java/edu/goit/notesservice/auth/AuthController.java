@@ -30,13 +30,14 @@ public class AuthController {
     @PostMapping("/registration")
     public ModelAndView postRegistration(@Valid @ModelAttribute RegistrationDTO registrationDTO,
                                          BindingResult errors) {
-        if (errors.hasErrors()) {
-            return new ModelAndView("/security/registration");
+
+        if (authService.isUsernameExists(registrationDTO.getUsername())) {
+            errors.rejectValue("username", "field.duplicated", "Користувач з таким ім'ям вже існує.");
+            return new ModelAndView("/security/registration", "registrationDTO", registrationDTO);
         }
 
-        if (authService.usernameExists(registrationDTO.getUsername())) {
-            errors.rejectValue("username", "field.duplicated", "Username already exists.");
-            return new ModelAndView("/security/registration", "registrationDTO", registrationDTO);
+        if (errors.hasErrors()) {
+            return new ModelAndView("/security/registration");
         }
 
         authService.register(registrationDTO.getUsername(), passwordEncoder.encode(registrationDTO.getPassword()));

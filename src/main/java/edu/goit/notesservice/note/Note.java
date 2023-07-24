@@ -5,22 +5,18 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
 @Data
 @Table(name = "notes")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
-    @NotBlank
+    @NotNull
     private UUID id;
 
     @Column(length = 100, nullable = false)
@@ -41,4 +37,15 @@ public class Note {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Note() {
+    }
+
+    public Note(UUID id, String title, String content, AccessType accessType, User user) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.accessType = accessType;
+        this.user = user;
+    }
 }

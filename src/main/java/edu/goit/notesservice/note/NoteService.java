@@ -60,9 +60,7 @@ public class NoteService {
                     HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
         }
         Note note = getById(id);
-        if (note.getAccessType().equals(AccessType.PRIVATE) && note.getUser().getId() != authService.getUser().getId()) {
-            return false;
-        }
-        return true;
+        return note.getAccessType().equals(AccessType.PUBLIC)
+                || note.getUser().getId() == authService.getUser().getId();
     }
 }
