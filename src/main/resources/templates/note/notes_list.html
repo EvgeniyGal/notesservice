@@ -15,103 +15,111 @@
     />
     <style>
         .container {
-            justify-content: center;
             width: 1200px;
+            padding: 20px;
         }
-
+        .logoutText{
+            margin-left: 10px;
+        }
         .colName {
             width: 300px;
         }
-
         .colType {
             width: 150px;
         }
-
         .colButtons {
             width: 150px;
         }
-
         .buttonsBox {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
         }
-
         .table tbody td {
             vertical-align: middle;
         }
-
-
     </style>
 </head>
-<body class="container">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <h1 th:text="'Мої нотатки - '+${notes.size()}+' шт.'"></h1>
+        <a class="navbar-brand" th:href="@{/note/list}">Ласкаво просимо до Нотатків</a>
         <button
-                type="button"
-                class="btn btn-info"
-                onclick="window.location.href='/note/create'"
-        >
-            Додати нотатку
+                onclick="window.location.replace('/logout')"
+                class="btn btn-info">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <span class="logoutText">Log Out</span>
         </button>
     </div>
 </nav>
+<main class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <h1 th:text="'Мої нотатки - '+${notes.size()}+' шт.'"></h1>
+            <button
+                    type="button"
+                    class="btn btn-info"
+                    onclick="window.location.href='/note/create'"
+            >
+                Додати нотатку
+            </button>
+        </div>
+    </nav>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th class="colName">Назва</th>
+            <th>Опис</th>
+            <th class="colType">Тип</th>
+            <th class="colButtons"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="note : ${notes}">
+            <td class="colName" th:text="${note.title}"></td>
+            <td th:text="${note.content}"></td>
 
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th class="colName">Назва</th>
-        <th>Опис</th>
-        <th class="colType">Тип</th>
-        <th class="colButtons"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="note : ${notes}">
-        <td class="colName" th:text="${note.title}"></td>
-        <td th:text="${note.content}"></td>
+            <td class="colType" th:text="${note.accessType.toString().equals('PUBLIC')?'Публічна':'Приватна'}"></td>
 
-        <td class="colType" th:text="${note.accessType.toString().equals('PUBLIC')?'Публічна':'Приватна'}"></td>
+            <td class="colButtons">
+                <div class="buttonsBox">
 
-        <td class="colButtons">
-            <div class="buttonsBox">
-
-                <form
-                        th:action="@{/note/delete}"
-                        method="post"
-                        style="display: inline"
-                >
-                    <input type="hidden" name="id" th:value="${note.id}"/>
-                    <button class="btn btn-danger"
-                            th:data-confirm-delete="|Ви впевнені що хочете видалити нотатку '${note.title}'? Цю операцію не можна буде відмінити.|"
-                            onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    <form
+                            th:action="@{/note/delete}"
+                            method="post"
+                            style="display: inline"
+                    >
+                        <input type="hidden" name="id" th:value="${note.id}"/>
+                        <button class="btn btn-danger"
+                                th:data-confirm-delete="|Ви впевнені що хочете видалити нотатку '${note.title}'? Цю операцію не можна буде відмінити.|"
+                                onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                    <form
+                            th:action="@{/note/edit}"
+                            method="get"
+                            style="display: inline"
+                    >
+                        <input type="hidden" name="id" th:value="${note.id}"/>
+                        <button class="btn bg-warning">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                    <!--Temporary hardcoded host and port -->
+                    <button
+                            th:data-link="@{http://localhost:9999/note/share(id=${note.id})}"
+                            onclick="copy_link(this.getAttribute('data-link'))"
+                            class="btn bg-success">
+                        <i class="fa fa-share-alt" aria-hidden="true"></i>
                     </button>
-                </form>
-                <form
-                        th:action="@{/note/edit}"
-                        method="get"
-                        style="display: inline"
-                >
-                    <input type="hidden" name="id" th:value="${note.id}"/>
-                    <button class="btn bg-warning">
-                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                    </button>
-                </form>
-                <!--Temporary hardcoded host and port -->
-                <button
-                        th:data-link="@{http://localhost:9999/note/share(id=${note.id})}"
-                        onclick="copy_link(this.getAttribute('data-link'))"
-                        class="btn bg-success">
-                    <i class="fa fa-share-alt" aria-hidden="true"></i>
-                </button>
-            </div>
-        </td>
-    </tr>
-    </tbody>
-</table>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
 </body>
 <script>
     function copy_link(link) {
