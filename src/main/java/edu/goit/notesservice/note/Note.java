@@ -5,16 +5,24 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.UUID;
 
 @Entity
 @Data
 @Table(name = "notes")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Note {
     @Id
-    @Column(length = 36, nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false)
     @NotBlank
-    private String id;
+    private UUID id;
 
     @Column(length = 100, nullable = false)
     @NotBlank
@@ -34,9 +42,6 @@ public class Note {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    public Note() {
-    }
 
     public Note(NoteCreateDTO note) {
         this.title = note.getTitle();

@@ -1,6 +1,5 @@
 package edu.goit.notesservice.auth;
 
-import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -20,12 +19,8 @@ public class AuthService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: " + username + " not found."));
     }
 
-    public User register(String username, String password) throws AuthException {
-        if (userRepository.findUserByUsername(username).isEmpty()){
-            return userRepository.save(new User(username, password));
-        } else {
-            throw new AuthException("User with name (" + username + ") is already exist");
-        }
+    public User register(String username, String password) {
+        return userRepository.save(new User(username, password));
     }
 
     private Authentication getAuth() {

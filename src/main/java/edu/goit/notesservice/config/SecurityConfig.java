@@ -30,7 +30,8 @@ public class SecurityConfig {
         auth.jdbcAuthentication().passwordEncoder(passwordEncoder())
                 .dataSource(dataSource)
                 .usersByUsernameQuery("select username, password, enabled from users where username=?")
-                .authoritiesByUsernameQuery("select username, authority from users where username=?");
+                .authoritiesByUsernameQuery("select username, authority from users where username=?")
+        ;
     }
 
     @Bean
