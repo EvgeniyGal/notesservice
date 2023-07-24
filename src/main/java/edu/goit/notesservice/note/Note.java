@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -42,10 +41,4 @@ public class Note {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    public Note(NoteCreateDTO note) {
-        this.title = note.getTitle();
-        this.content = note.getContent();
-        this.accessType = note.getAccessType();
-    }
 }

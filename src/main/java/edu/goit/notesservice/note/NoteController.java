@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.UUID;
+
 @RequestMapping("/note")
 @Controller
 @RequiredArgsConstructor
@@ -36,14 +38,14 @@ public class NoteController {
     }
 
     @GetMapping("/edit")
-    public ModelAndView getNoteForEdit(@RequestParam(name = "id") String id) {
+    public ModelAndView getNoteForEdit(@RequestParam(name = "id") UUID id) {
         ModelAndView result = new ModelAndView("note/edit_note");
         result.addObject("note", noteService.getById(id));
         return result;
     }
 
     @GetMapping("/share")
-    public ModelAndView getNoteForShare(@RequestParam(name = "id") String id) {
+    public ModelAndView getNoteForShare(@RequestParam(name = "id") UUID id) {
         if (noteService.isPossibleToShowNote(id)) {
             ModelAndView result = new ModelAndView("note/share");
             result.addObject("note", noteService.getById(id));
@@ -61,7 +63,7 @@ public class NoteController {
     }
 
     @PostMapping("/delete")
-    public String deleteNote(@Valid @RequestParam("id") String id) {
+    public String deleteNote(@RequestParam("id") UUID id) {
         noteService.deleteById(id);
         return REDIRECT_TO_LIST;
     }

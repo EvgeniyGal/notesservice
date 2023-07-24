@@ -21,17 +21,19 @@ public class NoteService {
     }
 
     public Note add(NoteCreateDTO note) {
-        Note fullNote = new Note(note);
-        fullNote.setId(UUID.randomUUID());
-        fullNote.setUser(authService.getUser());
+        Note fullNote = new Note(UUID.randomUUID(),
+                note.getTitle(),
+                note.getContent(),
+                note.getAccessType(),
+                authService.getUser());
         return noteRepository.save(fullNote);
     }
 
-    public boolean isExist(String id) {
+    public boolean isExist(UUID id) {
         return noteRepository.existsById(id);
     }
 
-    public void deleteById(String id) {
+    public void deleteById(UUID id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Нотатка з id '" + id + "' не існує");
@@ -44,7 +46,7 @@ public class NoteService {
         noteRepository.save(note);
     }
 
-    public Note getById(String id) {
+    public Note getById(UUID id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
@@ -52,7 +54,7 @@ public class NoteService {
         return noteRepository.getReferenceById(id);
     }
 
-    public boolean isPossibleToShowNote(String id) {
+    public boolean isPossibleToShowNote(UUID id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
