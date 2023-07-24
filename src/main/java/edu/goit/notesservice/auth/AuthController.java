@@ -1,6 +1,7 @@
 package edu.goit.notesservice.auth;
 
 import jakarta.security.auth.message.AuthException;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +15,8 @@ public class AuthController {
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
     private static final String REDIRECT_TO_LOGIN = "redirect:/login";
-    private static final String REDIRECT_TO_ERROR_REGPAGE = "redirect:/registration?error=true";
+    private static final String REDIRECT_TO_AUTH_ERROR_REGPAGE = "redirect:/registration?error=true&wrongauth=true";
+    private static final String REDIRECT_TO_VALIDATION_ERROR_REGPAGE = "redirect:/registration?error=true&wrongdata=true";
 
     @GetMapping("/login")
     public ModelAndView getLogin() {
@@ -32,9 +34,10 @@ public class AuthController {
         try {
             authService.register(username, passwordEncoder.encode(password));
             return REDIRECT_TO_LOGIN;
-        } catch (AuthException e) {
-            return REDIRECT_TO_ERROR_REGPAGE;
+        } catch (ConstraintViolationException | AuthException e) {
+            return e.getClass().getName().equals("jakarta.validation.ConstraintViolationException")
+                    ? REDIRECT_TO_VALIDATION_ERROR_REGPAGE
+                    : REDIRECT_TO_AUTH_ERROR_REGPAGE;
         }
-
     }
 }

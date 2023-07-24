@@ -1,13 +1,13 @@
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     id        INT AUTO_INCREMENT PRIMARY KEY,
-    username  VARCHAR(50)  NOT NULL,
+    username  VARCHAR(50)  NOT NULL UNIQUE,
     password  VARCHAR(100) NOT NULL,
     authority VARCHAR(50)  NOT NULL,
     enabled   Boolean DEFAULT true
 );
 
-CREATE TABLE notes
+CREATE TABLE IF NOT EXISTS notes
 (
     id          VARCHAR(36) PRIMARY KEY,
     title       VARCHAR(100)   NOT NULL,
