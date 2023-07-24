@@ -1,5 +1,6 @@
 package edu.goit.notesservice.auth;
 
+import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,7 @@ public class AuthController {
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
     private static final String REDIRECT_TO_LOGIN = "redirect:/login";
+    private static final String REDIRECT_TO_ERROR_REGPAGE = "redirect:/registration?error=true";
 
     @GetMapping("/login")
     public ModelAndView getLogin() {
@@ -27,8 +29,12 @@ public class AuthController {
     @PostMapping("/registration")
     public String postRegistration(@Valid @RequestParam(name = "username") String username,
                                    @RequestParam(name = "password") String password) {
-        authService.register(username, passwordEncoder.encode(password));
-        return REDIRECT_TO_LOGIN;
-    }
+        try {
+            authService.register(username, passwordEncoder.encode(password));
+            return REDIRECT_TO_LOGIN;
+        } catch (AuthException e) {
+            return REDIRECT_TO_ERROR_REGPAGE;
+        }
 
+    }
 }
