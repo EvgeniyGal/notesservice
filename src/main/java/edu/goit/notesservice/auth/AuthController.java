@@ -22,18 +22,24 @@ public class AuthController {
 
     @GetMapping("/registration")
     public ModelAndView getRegistration() {
-        return new ModelAndView("/security/registration", "registrationDTO", new RegistrationDTO());
+        return new ModelAndView("/security/registration",
+                "registrationDTO",
+                new RegistrationDTO());
     }
 
     @PostMapping("/registration")
-    public ModelAndView postRegistration(@Valid @ModelAttribute RegistrationDTO registrationDTO, BindingResult bindingResult) {
+    public ModelAndView postRegistration(@Valid @ModelAttribute RegistrationDTO registrationDTO,
+                                         BindingResult errors) {
+        if (errors.hasErrors()) {
+            return new ModelAndView("/security/registration");
+        }
 
-        if (bindingResult.hasErrors()) {
-            return new ModelAndView("/security/registration").addObject("error", "Invalid username or password. Username should be between 5 and 50 characters, and password should be between 8 and 100 characters.");
+        if (authService.usernameExists(registrationDTO.getUsername())) {
+            errors.rejectValue("username", "field.duplicated", "Username already exists.");
+            return new ModelAndView("/security/registration", "registrationDTO", registrationDTO);
         }
 
         authService.register(registrationDTO.getUsername(), passwordEncoder.encode(registrationDTO.getPassword()));
         return new ModelAndView(REDIRECT_TO_LOGIN);
     }
-
 }

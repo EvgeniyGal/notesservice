@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, unique = true, nullable = false)
     @Size(min = 5, max = 50)
     @NotBlank
     private String username;
