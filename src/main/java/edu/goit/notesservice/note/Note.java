@@ -7,14 +7,17 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Entity
 @Data
 @Table(name = "notes")
 public class Note {
     @Id
-    @Column(length = 36, nullable = false)
-    @NotBlank
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false)
+    @NotNull
+    private UUID id;
 
     @Column(length = 100, nullable = false)
     @NotBlank
@@ -38,9 +41,11 @@ public class Note {
     public Note() {
     }
 
-    public Note(NoteCreateDTO note) {
-        this.title = note.getTitle();
-        this.content = note.getContent();
-        this.accessType = note.getAccessType();
+    public Note(UUID id, String title, String content, AccessType accessType, User user) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.accessType = accessType;
+        this.user = user;
     }
 }

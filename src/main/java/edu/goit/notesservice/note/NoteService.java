@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +14,6 @@ import java.util.UUID;
 public class NoteService {
     private final NoteRepository noteRepository;
     private final AuthService authService;
-    private static final String NOTE_NOT_EXIST = "Нотатка з id 'id' не існує";
 
     public List<Note> listAll() {
         User currentUser = authService.getUser();
@@ -23,20 +21,22 @@ public class NoteService {
     }
 
     public Note add(NoteCreateDTO note) {
-        Note fullNote = new Note(note);
-        fullNote.setId(UUID.randomUUID().toString());
-        fullNote.setUser(authService.getUser());
+        Note fullNote = new Note(UUID.randomUUID(),
+                note.getTitle(),
+                note.getContent(),
+                note.getAccessType(),
+                authService.getUser());
         return noteRepository.save(fullNote);
     }
 
-    public boolean isExist(String id) {
+    public boolean isExist(UUID id) {
         return noteRepository.existsById(id);
     }
 
-    public void deleteById(String id) {
+    public void deleteById(UUID id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, NOTE_NOT_EXIST.replace("id", id));
+                    HttpStatus.BAD_REQUEST, "Нотатка з id '" + id + "' не існує");
         }
         noteRepository.deleteById(id);
     }
@@ -46,18 +46,18 @@ public class NoteService {
         noteRepository.save(note);
     }
 
-    public Note getById(String id) {
+    public Note getById(UUID id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, NOTE_NOT_EXIST.replace("id", id));
+                    HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
         }
         return noteRepository.getReferenceById(id);
     }
 
-    public boolean isPossibleToShowNote(String id) {
+    public boolean isPossibleToShowNote(UUID id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, NOTE_NOT_EXIST.replace("id", id));
+                    HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
         }
         Note note = getById(id);
         return note.getAccessType().equals(AccessType.PUBLIC)

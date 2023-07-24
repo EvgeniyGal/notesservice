@@ -11,9 +11,7 @@
           crossorigin="anonymous">
     <style>
         .container {
-            display: flex;
-            justify-content: center;
-            width: 1200px;
+            width: 600px;
             padding: 20px;
         }
         p {
@@ -25,39 +23,36 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/note/list}">Ласкаво просимо до Нотатків</a>
+        <a class="navbar-brand" th:href="@{/login}">Ласкаво просимо до Нотатків</a>
     </div>
 </nav>
-<div class="container">
-    <div>
-        <div th:if="${param.error}" th:classappend="${param.error} ? 'alert alert-danger' : ''">
-            <p th:text="'Невірний пароль або імʼя користувача'"></p>
+<main class="container">
+    <div th:if="${param.error}" th:classappend="${param.error} ? 'alert alert-danger' : ''">
+        <p th:text="'Невірний пароль або імʼя користувача'"></p>
+    </div>
+    <div th:if="${param.logout}" class="alert alert-success">Ви успішно вийшли з системи</div>
+    <div class="card">
+        <div class="card-header">
+            <h2 class="text-center">Форма авторизації</h2>
         </div>
-        <div th:if="${param.logout}" class="alert alert-success">Ви успішно вийшли з системи</div>
-        <div class="card">
-            <div class="card-header">
-                <h2 class="text-center">Форма авторизації</h2>
-            </div>
-            <div class="card-body">
-                <form method="post" role="form" th:action="@{/login}" class="form-horizontal" th:object="${user}">
-                    <div class="form-group mb-3">
-                        <label class="control-label">Імʼя</label>
-                        <input type="text" id="username" name="username" class="form-control"
-                               placeholder="Введіть імʼя" required/>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label class="control-label">Пароль</label>
-                        <input type="password" id="password" name="password" class="form-control"
-                               placeholder="Введіть пароль" required/>
-                    </div>
-                    <div class="form-group mb-3">
-                        <button type="submit" class="btn btn-primary">Відправити</button>
-                        <span>Не зареєстровані? <a th:href="@{/registration}">Зареєструватись</a></span>
-                    </div>
-                </form>
-            </div>
+        <div class="card-body">
+            <form method="post" role="form" th:action="@{/login}" class="form-horizontal" th:object="${user}">
+                <div class="form-group mb-3">
+                    <label class="control-label">Імʼя</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Введіть імʼя"/>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="control-label">Пароль</label>
+                    <input type="password" id="password" name="password" class="form-control"
+                           placeholder="Введіть пароль"/>
+                </div>
+                <div class="form-group mb-3">
+                    <button type="submit" class="btn btn-primary">Відправити</button>
+                    <span>Не зареєстровані? <a th:href="@{/registration}">Зареєструватись</a></span>
+                </div>
+            </form>
         </div>
     </div>
-</div>
+</main>
 </body>
 </html>

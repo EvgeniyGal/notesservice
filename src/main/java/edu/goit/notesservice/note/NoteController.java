@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
+import java.util.UUID;
 
 @RequestMapping("/note")
 @Controller
@@ -17,16 +18,12 @@ public class NoteController {
 
     @GetMapping("/list")
     public ModelAndView getAllNotes() {
-        ModelAndView result = new ModelAndView("note/notes_list");
-        result.addObject("notes", noteService.listAll());
-        return result;
+        return new ModelAndView("note/notes_list", "notes", noteService.listAll());
     }
 
     @GetMapping("/create")
     public ModelAndView getMarkupToCreateNote() {
-        ModelAndView result = new ModelAndView("note/create_note");
-        result.addObject("note", new NoteCreateDTO());
-        return result;
+        return new ModelAndView("note/create_note", "note", new NoteCreateDTO());
     }
 
     @PostMapping("/create")
@@ -36,18 +33,14 @@ public class NoteController {
     }
 
     @GetMapping("/edit")
-    public ModelAndView getNoteForEdit(@RequestParam(name = "id") String id) {
-        ModelAndView result = new ModelAndView("note/edit_note");
-        result.addObject("note", noteService.getById(id));
-        return result;
+    public ModelAndView getNoteForEdit(@RequestParam(name = "id") UUID id) {
+        return new ModelAndView("note/edit_note", "note", noteService.getById(id));
     }
 
     @GetMapping("/share")
-    public ModelAndView getNoteForShare(@RequestParam(name = "id") String id) {
+    public ModelAndView getNoteForShare(@RequestParam(name = "id") UUID id) {
         if (noteService.isPossibleToShowNote(id)) {
-            ModelAndView result = new ModelAndView("note/share");
-            result.addObject("note", noteService.getById(id));
-            return result;
+            return new ModelAndView("note/share", "note", noteService.getById(id));
         } else {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
@@ -61,7 +54,7 @@ public class NoteController {
     }
 
     @PostMapping("/delete")
-    public String deleteNote(@Valid @RequestParam("id") String id) {
+    public String deleteNote(@RequestParam("id") UUID id) {
         noteService.deleteById(id);
         return REDIRECT_TO_LIST;
     }

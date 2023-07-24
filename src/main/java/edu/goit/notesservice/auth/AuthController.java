@@ -1,11 +1,10 @@
 package edu.goit.notesservice.auth;
 
-import jakarta.security.auth.message.AuthException;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,8 +14,6 @@ public class AuthController {
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
     private static final String REDIRECT_TO_LOGIN = "redirect:/login";
-    private static final String REDIRECT_TO_AUTH_ERROR_REGPAGE = "redirect:/registration?error=true&wrongauth=true";
-    private static final String REDIRECT_TO_VALIDATION_ERROR_REGPAGE = "redirect:/registration?error=true&wrongdata=true";
 
     @GetMapping("/login")
     public ModelAndView getLogin() {
@@ -25,19 +22,25 @@ public class AuthController {
 
     @GetMapping("/registration")
     public ModelAndView getRegistration() {
-        return new ModelAndView("/security/registration");
+        return new ModelAndView("/security/registration",
+                "registrationDTO",
+                new RegistrationDTO());
     }
 
     @PostMapping("/registration")
-    public String postRegistration(@Valid @RequestParam(name = "username") String username,
-                                   @RequestParam(name = "password") String password) {
-        try {
-            authService.register(username, passwordEncoder.encode(password));
-            return REDIRECT_TO_LOGIN;
-        } catch (ConstraintViolationException | AuthException e) {
-            return e.getClass().getName().equals("jakarta.validation.ConstraintViolationException")
-                    ? REDIRECT_TO_VALIDATION_ERROR_REGPAGE
-                    : REDIRECT_TO_AUTH_ERROR_REGPAGE;
+    public ModelAndView postRegistration(@Valid @ModelAttribute RegistrationDTO registrationDTO,
+                                         BindingResult errors) {
+
+        if (authService.isUsernameExists(registrationDTO.getUsername())) {
+            errors.rejectValue("username", "field.duplicated", "Користувач з таким ім'ям вже існує.");
+            return new ModelAndView("/security/registration", "registrationDTO", registrationDTO);
         }
+
+        if (errors.hasErrors()) {
+            return new ModelAndView("/security/registration");
+        }
+
+        authService.register(registrationDTO.getUsername(), passwordEncoder.encode(registrationDTO.getPassword()));
+        return new ModelAndView(REDIRECT_TO_LOGIN);
     }
 }

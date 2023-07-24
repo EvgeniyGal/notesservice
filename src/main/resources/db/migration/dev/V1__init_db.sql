@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS users
 (
-    id        INT AUTO_INCREMENT PRIMARY KEY,
+    id        UUID PRIMARY KEY,
     username  VARCHAR(50)  NOT NULL UNIQUE,
     password  VARCHAR(100) NOT NULL,
     authority VARCHAR(50)  NOT NULL,
@@ -9,11 +9,11 @@ CREATE TABLE IF NOT EXISTS users
 
 CREATE TABLE IF NOT EXISTS notes
 (
-    id          VARCHAR(36) PRIMARY KEY,
+    id          UUID PRIMARY KEY,
     title       VARCHAR(100)   NOT NULL,
     content     VARCHAR(10000) NOT NULL,
     access_type VARCHAR(10)    NOT NULL,
-    user_id     INT            NOT NULL,
+    user_id     UUID            NOT NULL,
     CONSTRAINT fk_notes_user FOREIGN KEY (user_id) REFERENCES users (id)
 );
 

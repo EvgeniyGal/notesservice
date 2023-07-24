@@ -2,14 +2,15 @@ package edu.goit.notesservice.auth;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,10 +18,11 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @NotNull
+    private UUID id;
 
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 50, unique = true, nullable = false)
     @Size(min = 5, max = 50)
     @NotBlank
     private String username;
@@ -40,6 +42,7 @@ public class User implements UserDetails {
     }
 
     public User(String username, String password) {
+        this.id = UUID.randomUUID();
         this.username = username;
         this.password = password;
         this.authority = "ROLE_USER";
