@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class NoteService {
     private final NoteRepository noteRepository;
     private final AuthService authService;
+    private static final String NOTE_NOT_EXIST = "Нотатка з id 'id' не існує";
 
     public List<Note> listAll() {
         User currentUser = authService.getUser();
@@ -34,7 +36,7 @@ public class NoteService {
     public void deleteById(String id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Нотатка з id '" + id + "' не існує");
+                    HttpStatus.BAD_REQUEST, NOTE_NOT_EXIST.replace("id", id));
         }
         noteRepository.deleteById(id);
     }
@@ -47,7 +49,7 @@ public class NoteService {
     public Note getById(String id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
+                    HttpStatus.NOT_FOUND, NOTE_NOT_EXIST.replace("id", id));
         }
         return noteRepository.getReferenceById(id);
     }
@@ -55,12 +57,10 @@ public class NoteService {
     public boolean isPossibleToShowNote(String id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
+                    HttpStatus.NOT_FOUND, NOTE_NOT_EXIST.replace("id", id));
         }
         Note note = getById(id);
-        if (note.getAccessType().equals(AccessType.PRIVATE) && note.getUser().getId() != authService.getUser().getId()) {
-            return false;
-        }
-        return true;
+        return note.getAccessType().equals(AccessType.PUBLIC)
+                || note.getUser().getId() == authService.getUser().getId();
     }
 }
