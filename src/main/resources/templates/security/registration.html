@@ -16,7 +16,7 @@
             margin: 0;
             padding: 0;
         }
-        .myalert{
+        .myalert {
             margin-top: 5px;
         }
     </style>
@@ -33,17 +33,18 @@
             <h2 class="text-center">Форма реєстрації</h2>
         </div>
         <div class="card-body">
-            <form method="post" role="form" th:action="@{/registration}" th:object="${registrationDTO}">
+            <form method="post" role="form" th:action="@{/register}" th:object="${registrationDTO}">
                 <div class="form-group mb-3">
                     <label class="control-label" for="username">Імʼя</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Введіть імʼя"/>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Введіть імʼя"
+                           required/>
                     <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
                          class="alert alert-danger myalert"></div>
                 </div>
                 <div class="form-group mb-3">
                     <label class="control-label" for="password">Пароль</label>
                     <input type="password" id="password" name="password" class="form-control"
-                           placeholder="Введіть пароль"/>
+                           placeholder="Введіть пароль" required/>
                     <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
                          class="alert alert-danger myalert"></div>
                 </div>

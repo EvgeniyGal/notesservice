@@ -21,14 +21,14 @@ public class AuthController {
         return new ModelAndView("/security/login");
     }
 
-    @GetMapping("/registration")
+    @GetMapping("/register")
     public ModelAndView getRegistration() {
         return new ModelAndView(REGISTRATION_FORM_LOCATION,
                 "registrationDTO",
                 new RegistrationDTO());
     }
 
-    @PostMapping("/registration")
+    @PostMapping("/register")
     public ModelAndView postRegistration(@Valid @ModelAttribute RegistrationDTO registrationDTO,
                                          BindingResult errors) {
 
