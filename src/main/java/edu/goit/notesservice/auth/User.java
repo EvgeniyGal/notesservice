@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -23,12 +25,12 @@ public class User implements UserDetails {
     private UUID id;
 
     @Column(length = 50, unique = true, nullable = false)
-    @Size(min = 5, max = 50)
+    @Size(min = 5, max = 50, message = "Ім'я користувача має мати від 5 до 50 символів")
     @NotBlank
     private String username;
 
     @Column(length = 100, nullable = false)
-    @Size(min = 8, max = 100)
+    @Size(min = 8, max = 100, message = "Пароль має мати від 8 до 100 символів")
     @NotBlank
     private String password;
 
@@ -37,9 +39,6 @@ public class User implements UserDetails {
 
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean enabled = true;
-
-    public User() {
-    }
 
     public User(String username, String password) {
         this.id = UUID.randomUUID();

@@ -9,11 +9,11 @@ import lombok.Data;
 @Data
 public class NoteCreateDTO {
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 100, message = "Найменування нотатки має мати від 5 до 100 символів")
     private String title;
 
     @NotBlank
-    @Size(min = 3, max = 10000)
+    @Size(min = 3, max = 10000, message = "Текст нотатки має мати від 5 до 10000 символів")
     private String content;
 
     @NotNull
