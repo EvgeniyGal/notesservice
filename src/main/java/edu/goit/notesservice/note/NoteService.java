@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class NoteService {
     private final NoteRepository noteRepository;
     private final AuthService authService;
+    private static final String IGNORE_NOTE_ID = "Нотатка з id 'id' не існує";
 
     public List<Note> listAll() {
         User currentUser = authService.getUser();
@@ -36,7 +38,7 @@ public class NoteService {
     public void deleteById(UUID id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Нотатка з id '" + id + "' не існує");
+                    HttpStatus.BAD_REQUEST, IGNORE_NOTE_ID.replace("id", id.toString()));
         }
         noteRepository.deleteById(id);
     }
@@ -49,7 +51,7 @@ public class NoteService {
     public Note getById(UUID id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
+                    HttpStatus.NOT_FOUND, IGNORE_NOTE_ID.replace("id", id.toString()));
         }
         return noteRepository.getReferenceById(id);
     }
@@ -57,7 +59,7 @@ public class NoteService {
     public boolean isPossibleToShowNote(UUID id) {
         if (!isExist(id)) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Нотатка з id '" + id + "' не існує");
+                    HttpStatus.NOT_FOUND, IGNORE_NOTE_ID.replace("id", id.toString()));
         }
         Note note = getById(id);
         return note.getAccessType().equals(AccessType.PUBLIC)

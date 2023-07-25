@@ -14,6 +14,7 @@ public class AuthController {
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
     private static final String REDIRECT_TO_LOGIN = "redirect:/login";
+    private static final String REGISTRATION_FORM_LOCATION = "/security/registration";
 
     @GetMapping("/login")
     public ModelAndView getLogin() {
@@ -22,7 +23,7 @@ public class AuthController {
 
     @GetMapping("/registration")
     public ModelAndView getRegistration() {
-        return new ModelAndView("/security/registration",
+        return new ModelAndView(REGISTRATION_FORM_LOCATION,
                 "registrationDTO",
                 new RegistrationDTO());
     }
@@ -33,11 +34,11 @@ public class AuthController {
 
         if (authService.isUsernameExists(registrationDTO.getUsername())) {
             errors.rejectValue("username", "field.duplicated", "Користувач з таким ім'ям вже існує.");
-            return new ModelAndView("/security/registration", "registrationDTO", registrationDTO);
+            return new ModelAndView(REGISTRATION_FORM_LOCATION, "registrationDTO", registrationDTO);
         }
 
         if (errors.hasErrors()) {
-            return new ModelAndView("/security/registration");
+            return new ModelAndView(REGISTRATION_FORM_LOCATION);
         }
 
         authService.register(registrationDTO.getUsername(), passwordEncoder.encode(registrationDTO.getPassword()));
